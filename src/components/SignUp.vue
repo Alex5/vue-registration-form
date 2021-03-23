@@ -19,34 +19,54 @@
               <div class="form_field--group">
                 <div>
                   <label for="surname">Фамилия</label>
-                  <input id="surname" type="text" autocomplete="off" v-model.trim="form.surname">
+                  <input
+                      :class="$v.form.surname.$error ? 'is-invalid' : ''"
+                      id="surname" type="text" autocomplete="off" v-model.trim="form.surname">
+                  <p v-if="$v.form.surname.$error"
+                     class="invalid-feedback">Поле обязательное</p>
                 </div>
                 <div>
                   <label for="name">Имя</label>
-                  <input id="name" type="text" autocomplete="off" v-model.trim="form.name">
+                  <input :class="$v.form.name.$error ? 'is-invalid' : ''"
+                         id="name" type="text" autocomplete="off" v-model.trim="form.name">
+                  <p v-if="$v.form.name.$error"
+                     class="invalid-feedback">Поле обязательное</p>
                 </div>
               </div>
               <label for="middle-name">Отчество</label>
               <input id="middle-name" type="text" autocomplete="off" v-model.trim="form.middleName">
               <label for="birthday">Дата рождения</label>
-              <input id="birthday" type="date" v-model="form.birthday">
+              <input :class="$v.form.birthday.$error ? 'is-invalid' : ''"
+                     id="birthday" type="date" v-model="form.birthday">
+              <p v-if="$v.form.birthday.$error"
+                 class="invalid-feedback">Поле обязательное</p>
               <label for="phone">Номер телефона</label>
-              <input id="phone" type="tel" pattern="2[0-9]{3}-[0-9]{3}" v-model="form.phone">
+              <input :class="$v.form.phone.$error ? 'is-invalid' : ''"
+                     id="phone" type="tel" v-model="form.phone"
+                     placeholder="7">
+              <p v-if="$v.form.phone.$error"
+                 class="invalid-feedback">Поле обязательное</p>
+              <p v-if="!$v.form.phone.minLength"
+                 class="invalid-feedback">11 цифр</p>
               <label for="sex">Пол</label>
               <select id="sex" v-model="form.selectedSex">
-                <option v-for="(item, index) in form.sex" :value="item.value" :key='index'>
+                <option v-for="(item, index) in formState.sex" :value="item.value" :key='index'>
                   {{ item.label }}
                 </option>
               </select>
               <label for="customer-group">Группа клиентов</label>
-              <select id="customer-group" multiple v-model="form.selectedClientGroup">
-                <option v-for="(item, index) in form.clientGroup" :value="item.value" :key='index'>
+              <select :class="$v.form.selectedClientGroup.$error ? 'is-invalid' : ''"
+                      id="customer-group" multiple v-model="form.selectedClientGroup">
+                <option
+                    v-for="(item, index) in formState.clientGroup" :value="item.value" :key='index'>
                   {{ item.label }}
                 </option>
               </select>
+              <p v-if="$v.form.selectedClientGroup.$error"
+                 class="invalid-feedback">Поле обязательное</p>
               <label for="primary-doctor">Лечащий врач.</label>
               <select name="primary-doctor" id="primary-doctor" v-model="form.selectedPrimaryDoctor">
-                <option v-for="(item, index) in form.primaryDoctors" :value="item.value" :key='index'>
+                <option v-for="(item, index) in formState.primaryDoctors" :value="item.value" :key='index'>
                   {{ item.label }}
                 </option>
               </select>
@@ -76,7 +96,7 @@
             <div class="form_field">
               <label for="documentType">Тип документа</label>
               <select id="documentType" v-model.trim="form.selectedDocumentType">
-                <option v-for="(item, index) in form.documentType" :value="item.value" :key='index'>
+                <option v-for="(item, index) in formState.documentType" :value="item.value" :key='index'>
                   {{ item.label }}
                 </option>
               </select>
@@ -92,19 +112,29 @@
           </section>
           <div class="form-buttons">
             <button v-if="step !== 1" class="prevBtn" @click.prevent="prevStep">Назад</button>
-            <button v-if="step !== totalSteps" class="nextBtn" @click.prevent="nextStep">Далее</button>
-            <button v-if="step === totalSteps" class="nextBtn" @click.prevent="openModal">Проверить</button>
+            <button
+                v-if="step !== totalSteps"
+                class="nextBtn"
+                @click.prevent="nextStep">Далее
+            </button>
+            <button
+                v-if="step === totalSteps"
+                class="nextBtn"
+                @click.prevent="openModal">Проверить
+            </button>
           </div>
         </form>
-
       </div>
     </main>
   </div>
 </template>
 
 <script>
+import {validationMixin} from 'vuelidate'
+import {required, minLength} from 'vuelidate/lib/validators'
 
 export default {
+  mixins: [validationMixin],
   data() {
     return {
       form: {
@@ -114,6 +144,22 @@ export default {
         birthday: '',
         phone: '',
         selectedSex: 'value not set',
+        selectedClientGroup: [],
+        selectedPrimaryDoctor: '',
+        noSendSms: false,
+        cityIndex: '',
+        country: '',
+        area: '',
+        city: '',
+        street: '',
+        home: '',
+        selectedDocumentType: '',
+        series: '',
+        documentNumber: '',
+        issuedBy: ''
+      },
+
+      formState: {
         sex: [
           {
             label: 'Мужской',
@@ -127,7 +173,6 @@ export default {
             value: 'another'
           }
         ],
-        selectedClientGroup: [],
         clientGroup: [
           {
             label: 'VIP',
@@ -141,7 +186,6 @@ export default {
             value: 'omc'
           }
         ],
-        selectedPrimaryDoctor: '',
         primaryDoctors: [
           {
             label: 'Иванов',
@@ -155,14 +199,6 @@ export default {
             value: 'chernysheva'
           }
         ],
-        noSendSms: false,
-        cityIndex: '',
-        country: '',
-        area: '',
-        city: '',
-        street: '',
-        home: '',
-        selectedDocumentType : '',
         documentType: [
           {
             label: 'Паспорт',
@@ -176,9 +212,6 @@ export default {
             value: 'driversLicence'
           }
         ],
-        series: '',
-        documentNumber: '',
-        issuedBy: ''
       },
 
       step: 1,
@@ -186,15 +219,49 @@ export default {
     }
   },
 
+  validations: {
+    form: {
+      surname: {
+        required
+      },
+      name: {
+        required
+      },
+      birthday: {
+        required
+      },
+      phone: {
+        required,
+        minLength: minLength(11)
+      },
+      selectedClientGroup: {
+        required
+      }
+    }
+  },
+
+  // this.$v.form.$touch(),
+
   methods: {
-    nextStep: function () {
-      this.step++
+    nextStep() {
+      if (this.checkForm()) {
+        this.checkForm()
+      } else {
+        this.step++
+      }
     },
-    prevStep: function () {
+    prevStep() {
       this.step--
     },
-    openModal: function () {
+    openModal() {
       alert('Нужно проверить данные!')
+    },
+    checkForm() {
+      this.$v.form.$touch()
+      if (this.$v.form.$error) {
+        console.log('Валидация прошла успешно')
+        return true
+      }
     }
   }
 }
