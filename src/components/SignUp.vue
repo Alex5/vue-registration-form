@@ -134,7 +134,7 @@
                 <li>Отчество: {{ form.personalData.middleName || `Значение не выбрано` }}</li>
                 <li>День рождение: {{ form.personalData.birthday || `Значение не выбрано` }}</li>
                 <li>Телефон: {{ form.personalData.phone || `Значение не выбрано` }}</li>
-                <li>Пол: <b>{{ form.personalData.sex || `Значение не выбрано` }}</b></li>
+                <li>Пол: {{ form.personalData.sex || `Значение не выбрано` }}</li>
                 <li>Группа клиентов: {{ form.personalData.selectedClientGroup || `Значение не выбрано` }}</li>
                 <li>Лечащий врач: {{ form.personalData.selectedPrimaryDoctor || `Значение не выбрано` }}</li>
                 <li>Отправлять смс: {{ form.personalData.noSendSms || `Значение не выбрано` }}</li>
