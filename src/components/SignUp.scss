@@ -5,6 +5,10 @@
   display: flex;
   justify-content: space-around;
   font-family: Roboto, sans-serif;
+
+  .form-container {
+    display: flex;
+  }
 }
 
 .presentation {
@@ -21,11 +25,11 @@
   -moz-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding: 50px 40px 0;
   width: 50%;
-  padding: 100px 40px 0;
 
   img {
-    max-width: 600px;
+    width: 500px;
   }
 }
 
@@ -57,6 +61,23 @@
   margin-top: 25px;
   margin-bottom: 30px;
   border-radius: 4px;
+
+  .check-data {
+    ul li {
+      margin-bottom: 10px;
+    }
+  }
+
+  .submitBtn {
+    width: 75%;
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+    background: $base-color;
+  }
 }
 
 .description__text {
@@ -66,6 +87,11 @@
   margin-bottom: 20px;
   font-weight: 700;
   color: black;
+
+  &.alert {
+    font-size: 25px;
+    color: indianred;
+  }
 }
 
 
@@ -85,7 +111,11 @@
 .form_field {
   display: flex;
   flex-direction: column;
-  margin-right: 10px;
+
+  label {
+    color: darkgray;
+    margin-bottom: 10px;
+  }
 
   &--group {
     display: flex;
@@ -101,10 +131,7 @@
     }
   }
 
-  label {
-    color: darkgray;
-    margin-bottom: 10px;
-  }
+
 
   select {
     padding: 5px;
@@ -118,8 +145,7 @@
     border: none;
     border-bottom: 2px solid darkgray;
     margin-bottom: 10px;
-    height: 25px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px;
 
     &:focus {
@@ -129,7 +155,7 @@
     }
 
     &.is-invalid {
-      border-bottom: 2px solid red;
+      border-bottom: 2px solid #A22029;
     }
 
 
@@ -152,35 +178,73 @@
   &--sms {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 
     input {
       width: 20px;
+      height: 20px;
     }
+  }
+}
+
+button {
+
+  padding: 15px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  transition: all 0.3s ease 0s;
+  background: $base-color;
+
+  &.disable {
+    display: none;
+  }
+
+  &:hover {
+    background: darken($base-color, 3%);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    background: darken($base-color, 5%);
+  }
+}
+
+.prevBtn {
+  background: $secondary-color;
+  margin-right: 15px;
+
+  &:hover {
+    background: darken($secondary-color, 3%);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    background: darken($secondary-color, 5%);
+  }
+}
+
+.nextBtn {
+  background: $base-color;
+
+  &:hover {
+    background: darken($base-color, 3%);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    background: darken($base-color, 5%);
   }
 }
 
 .form-buttons {
   display: flex;
   justify-content: center;
-
-  button {
-    width: 75%;
-    padding: 15px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 600;
-    color: white;
-    white-space: nowrap;
-  }
-
-  .prevBtn {
-    background: $secondary-color;
-    margin-right: 15px;
-  }
-
-  .nextBtn {
-    background: $base-color;
-  }
 }
 
 @media screen and (max-width: 1050px) {
@@ -205,10 +269,58 @@
 }
 
 .invalid-feedback {
-  color: #8a0000;
+  color: #A22029;
   padding: 5px;
   border-radius: 5px;
-  background: #ffb3b3;
+  background: #F8D7DA;
   font-size: 12px;
-  width: 110px;
+  width: 120px;
+  text-align: center;
+  font-weight: 600;
 }
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 0.5 - полупрозрачный */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  .registration__block {
+    background: white;
+   padding: 15px;
+    position: relative;
+    overflow-y: scroll;
+    height: 80%;
+
+    ul li {
+      margin-left: 15px;
+    }
+  }
+}
+
+.success-registration {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+
+  &--body {
+    padding: 80px;
+    background: #e1e1e1;
+    border-radius: 20px;
+
+    h1 {
+      margin-bottom: 100px;
+      font-family: "Gilroy", sans-serif;
+    }
+  }
+}
+
