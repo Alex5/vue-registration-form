@@ -248,7 +248,7 @@ button {
 }
 
 @media screen and (max-width: 1050px) {
-  .main-container {
+  .form-container {
     flex-direction: column;
   }
   .presentation {
@@ -264,6 +264,7 @@ button {
 
     .registration__block {
       width: 100%;
+      margin-bottom: unset;
     }
   }
 }
